@@ -16,6 +16,5 @@ public class Task9 {
             System.out.print(bodyguard.check(guest) ? "" : " NOT ");
             System.out.println("allowed!");
         }
-
     }
 }
