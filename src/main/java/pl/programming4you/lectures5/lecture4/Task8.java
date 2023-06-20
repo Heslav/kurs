@@ -5,8 +5,7 @@ import java.util.List;
 
 public class Task8 {
     public static boolean haveSameElements(List<String> list, String[] array) {
-        int size = Math.min(list.size(), array.length);
-        for (int i = 0; i < size; i++) {
+        for (int i = 0; i < Math.min(list.size(), array.length); i++) {
             if (!list.get(i).equals(array[i])) {
                 return false;
             }
