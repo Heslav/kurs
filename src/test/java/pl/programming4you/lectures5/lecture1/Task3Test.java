@@ -2,7 +2,7 @@ package pl.programming4you.lectures5.lecture1;
 
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class Task3Test {
     @Test
