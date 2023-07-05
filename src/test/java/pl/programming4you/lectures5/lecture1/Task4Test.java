@@ -24,8 +24,13 @@ public class Task4Test {
     }
 
     @Test
-    public void shouldThrowIllegalArgumentExceptionForNullString() {
+    public void shouldThrowIllegalArgumentExceptionForEmptyString() {
         String randomText = "";
         assertThrows(IllegalArgumentException.class, () -> Task4.checkStringLength(randomText));
+    }
+
+    @Test
+    public void shouldThrowIllegalArgumentExceptionForNullString() {
+        assertThrows(IllegalArgumentException.class, () -> Task4.checkStringLength(null));
     }
 }

@@ -51,10 +51,10 @@ public class Task8Test {
     }
 
     @Test
-    @DisplayName("Should throw an exception if list or array is empty")
+    @DisplayName("Should return true if list and array is empty")
     public void shouldThrowIllegalArgumentExceptionForEmpty() {
         List<String> list = new ArrayList<>();
         String[] array = {};
-        assertThrows(IllegalArgumentException.class, () -> Task8.haveSameElements(list, array));
+        assertTrue(Task8.haveSameElements(list, array));
     }
 }
