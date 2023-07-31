@@ -1,7 +1,6 @@
 package pl.programming4you.lectures5.lecture9.Task19;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class Task19 {
 
@@ -24,11 +23,7 @@ public class Task19 {
                 new Laptop(16, 8, 3400, GraphicsCardType.INTEGRATED, 95),
                 new Laptop(32, 16, 3800, GraphicsCardType.DEDICATED, 105));
 
-        System.out.println(String.join("\n", getAirplaneLegalComputers(computers).stream().map(Computer::toString).collect(Collectors.toSet())));
-
+        Set<Computer> airplaneLegalComputers = getAirplaneLegalComputers(computers);
+        airplaneLegalComputers.forEach(System.out::println);
     }
 }
-
-
-
-
