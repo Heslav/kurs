@@ -1,6 +1,7 @@
 package pl.programming4you.lectures5.lecture9.task18;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -9,18 +10,12 @@ public class Fair implements Lottery {
 
     @Override
     public List<Player> getWinners() {
-        List<Player> winners = new ArrayList<>();
-        List<Integer> randomNumbers = new ArrayList<>();
-        Random random = new Random();
-        for (int i = 0; i < players.size(); i++) {
-            int randomNumber = random.nextInt(players.size());
+        List<Player> winners = new ArrayList<>(players);
+        Collections.shuffle(winners);
 
-            if (!randomNumbers.contains(randomNumber)) {
-                randomNumbers.add(randomNumber);
-                winners.add(players.get(randomNumber));
-            }
-        }
-        return winners;
+        Random random = new Random();
+        int randomNumber = random.nextInt(0, players.size() + 1);
+        return winners.subList(0, randomNumber);
     }
 
     @Override

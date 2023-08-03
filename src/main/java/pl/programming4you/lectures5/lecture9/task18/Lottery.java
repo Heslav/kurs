@@ -7,4 +7,3 @@ public interface Lottery {
 
     void play(Player player);
 }
-

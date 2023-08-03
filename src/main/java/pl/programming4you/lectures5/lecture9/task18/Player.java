@@ -11,6 +11,3 @@ class Player {
         return name;
     }
 }
-
-
-
