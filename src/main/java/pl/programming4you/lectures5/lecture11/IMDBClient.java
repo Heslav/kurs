@@ -5,42 +5,37 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.util.Properties;
-import java.util.Scanner;
 
-public class IMDBClient implements MovieDetailsFromIMDBApi {
-    private final JSONFormatValues JSONFormatValues;
-    private final Properties properties;
-    private String movieTitle;
+public class IMDBClient implements MovieDetailsApi {
+    private final MovieDetailsJSONMapper movieDetailsJSONMapper;
+    private final String imdbToken;
+    private final HttpClient httpClient;
 
-    public IMDBClient(JSONFormatValues JSONFormatValues,
-                      FileTokenProvider fileTokenProvider, String movieTitle) throws ConfigurationException {
-        this.JSONFormatValues = JSONFormatValues;
-        this.properties = fileTokenProvider.readToken();
-        this.movieTitle = movieTitle;
+    public IMDBClient(MovieDetailsJSONMapper movieDetailsJSONMapper, String imdbToken) {
+        this.movieDetailsJSONMapper = movieDetailsJSONMapper;
+        this.imdbToken = imdbToken;
+        this.httpClient = HttpClient.newHttpClient();
+    }
+
+    IMDBClient(MovieDetailsJSONMapper movieDetailsJSONMapper, String imdbToken, HttpClient httpClient) {
+        this.movieDetailsJSONMapper = movieDetailsJSONMapper;
+        this.imdbToken = imdbToken;
+        this.httpClient = httpClient;
     }
 
     @Override
-    public Integer getYearOfMade() throws CustomInterruptedException, ConfigurationException, InvalidMovieTitleException {
-        System.out.println("Enter a movie title to check its year of production: ");
-        movieTitle = new Scanner(System.in).nextLine();
-
-        if (movieTitle.isEmpty() || movieTitle == null) {
-            throw new InvalidMovieTitleException("Movie title cannot be null or empty. Type something.");
-        }
-
+    public Integer getReleaseYear(String movieTitle) throws CannotGetMovieInfoException {
         try {
-            return JSONFormatValues.getYearValueFromJSON(HttpClient.newHttpClient().send(HttpRequest.newBuilder()
+            HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create("https://imdb8.p.rapidapi.com/auto-complete?q=" + movieTitle.replace(" ", "")))
-                    .header("X-RapidAPI-Key", properties.getProperty("token"))
+                    .GET()
+                    .header("X-RapidAPI-Key", imdbToken)
                     .header("X-RapidAPI-Host", "imdb8.p.rapidapi.com")
-                    .method("GET", HttpRequest.BodyPublishers.noBody())
-                    .build(), HttpResponse.BodyHandlers.ofString()).body());
-        } catch (IOException e) {
-            throw new ConfigurationException("Cannot read properties.");
-        } catch (InterruptedException e) {
-            throw new CustomInterruptedException("Something went wrong while connecting with IMDB API. " +
-                    "Make sure your api key is still valid and your internet connection is good");
+                    .build();
+            return movieDetailsJSONMapper.getYearReleased(httpClient.send(request, HttpResponse.BodyHandlers.ofInputStream()).body());
+        } catch (InterruptedException | IOException e) {
+            throw new CannotGetMovieInfoException("Something went wrong while connecting with IMDB API. " +
+                    "Make sure your api key is still valid and your internet connection is good", e);
         }
     }
 }
