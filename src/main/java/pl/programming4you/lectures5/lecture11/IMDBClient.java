@@ -33,7 +33,7 @@ public class IMDBClient implements MovieDetailsApi {
                     .header("X-RapidAPI-Host", "imdb8.p.rapidapi.com")
                     .build();
             return movieDetailsJSONMapper.getYearReleased(httpClient.send(request, HttpResponse.BodyHandlers.ofInputStream()).body());
-        } catch (InterruptedException | IOException e) {
+        } catch (InterruptedException | IOException | CannotGetValidJsonValueException e) {
             throw new CannotGetMovieInfoException("Something went wrong while connecting with IMDB API. " +
                     "Make sure your api key is still valid and your internet connection is good", e);
         }
