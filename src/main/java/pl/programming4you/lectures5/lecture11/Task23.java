@@ -8,8 +8,8 @@ public class Task23 {
         }
         try {
             System.out.println(new IMDBClient(new MovieDetailsJSONMapper(), args[0]).getReleaseYear(args[1]));
-        } catch (CannotGetMovieInfoException e) {
-            System.err.println("Cannot get movie info");
+        } catch (NullPointerException | CannotGetMovieInfoException e) {
+            System.err.println("Cannot get movie info.");
             e.printStackTrace();
         }
     }
