@@ -19,7 +19,7 @@ class FilePropertiesProviderTest {
 
     @Test
     @DisplayName("Should throw ConfigurationException when .properties file doesn't exist")
-    public void testBreakfastIdeasFilePropertiesReaderWithoutFile() throws ConfigurationException {
+    public void testBreakfastIdeasFilePropertiesReaderWithoutFile() {
         assertThrows(ConfigurationException.class, () ->
                 new FilePropertiesProvider("noFile.properties").readProperties().getProperty("token"));
     }
