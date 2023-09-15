@@ -1,5 +1,6 @@
 package pl.programming4you.lectures5.lecture12.server;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
@@ -9,6 +10,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.logging.Logger;
 
 public class MyHttpHandler implements HttpHandler {
@@ -27,15 +29,17 @@ public class MyHttpHandler implements HttpHandler {
                 returnedMovie = handleGetRequest(httpExchange);
             } else if ("POST".equals(httpExchange.getRequestMethod())) {
                 returnedMovie = handlePostRequest(httpExchange);
+            } else {
+                errorMessage = "HTTP method not allowed";
             }
 
-        } catch (CannotProcessJsonException e) {
+        } catch (CannotProcessJsonException | MovieNotFoundException e) {
             errorMessage = e.getMessage();
         }
         handleResponse(httpExchange, returnedMovie, errorMessage);
     }
 
-    private Movie handlePostRequest(HttpExchange httpExchange) throws CannotProcessJsonException {
+    private Movie handlePostRequest(HttpExchange httpExchange) throws CannotProcessJsonException, IOException {
         try {
             Movie movie;
             movie = objectMapper.readValue(httpExchange.getRequestBody(), Movie.class);
@@ -44,16 +48,21 @@ public class MyHttpHandler implements HttpHandler {
             movies.put(id, movieWithId);
             logger.info("Saved movie " + movieWithId);
             return movieWithId;
-        } catch (IOException e) {
+        } catch (JsonProcessingException e) {
             throw new CannotProcessJsonException("Cannot properly process Json content.");
+        } catch (IOException e) {
+            throw new IOException("Something went wrong during reading request body.");
         }
-
     }
 
-    private Movie handleGetRequest(HttpExchange httpExchange) {
+    private Movie handleGetRequest(HttpExchange httpExchange) throws MovieNotFoundException {
         String requestUri = httpExchange.getRequestURI().toString();
         Integer id = Integer.parseInt(requestUri.substring(requestUri.lastIndexOf('/') + 1));
-        return movies.get(id);
+        Movie movie = movies.get(id);
+        if (movie == null) {
+            throw new MovieNotFoundException("Sorry, couldn't find a movie.");
+        }
+        return movie;
     }
 
     private void handleResponse(HttpExchange httpExchange, Movie movie, String errorMessage) throws IOException {
@@ -62,7 +71,11 @@ public class MyHttpHandler implements HttpHandler {
         int responseCode;
         int responseLength;
 
-        if (errorMessage != null) {
+        if (Objects.equals(errorMessage, "HTTP method not allowed")) {
+            responseCode = 405;
+            response = errorMessage;
+            responseLength = response.length();
+        } else if (errorMessage != null) {
             responseCode = 400;
             response = errorMessage;
             responseLength = response.length();
