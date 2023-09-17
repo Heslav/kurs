@@ -1,7 +1,7 @@
 package pl.programming4you.lectures5.lecture11;
 
-import org.junit.Test;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayInputStream;
 
