@@ -17,8 +17,7 @@ public class MyHttpHandler implements HttpHandler {
     private static final Logger logger = Logger.getLogger(MyHttpHandler.class.getName());
     private final Map<Integer, Movie> movies = new HashMap<>();
     private final ObjectMapper objectMapper = new ObjectMapper();
-    private int lastId = 0;
-
+    private int lastId = 1;
 
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {
@@ -41,8 +40,7 @@ public class MyHttpHandler implements HttpHandler {
 
     private Movie handlePostRequest(HttpExchange httpExchange) throws CannotProcessJsonException, IOException {
         try {
-            Movie movie;
-            movie = objectMapper.readValue(httpExchange.getRequestBody(), Movie.class);
+            Movie movie = objectMapper.readValue(httpExchange.getRequestBody(), Movie.class);
             int id = lastId++;
             Movie movieWithId = new Movie(id, movie.name(), movie.movieType(), movie.releaseYear(), movie.rating());
             movies.put(id, movieWithId);
@@ -60,7 +58,8 @@ public class MyHttpHandler implements HttpHandler {
         Integer id = Integer.parseInt(requestUri.substring(requestUri.lastIndexOf('/') + 1));
         Movie movie = movies.get(id);
         if (movie == null) {
-            throw new MovieNotFoundException("Sorry, couldn't find a movie.");
+            throw new MovieNotFoundException("Sorry, couldn't find a movie. Our data base currently has a size of: "
+                    + movies.size());
         }
         return movie;
     }
