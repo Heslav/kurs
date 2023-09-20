@@ -11,7 +11,7 @@ import java.util.logging.Logger;
 public class MyHttpServerStarter {
     private static final Logger logger = Logger.getLogger(HttpServer.class.getName());
 
-    public static void main(String[] args) throws CannotCreateServerException {
+    public static void main(String[] args) {
         try {
             ThreadPoolExecutor threadPoolExecutor = (ThreadPoolExecutor) Executors.newFixedThreadPool(10);
             HttpServer httpServer = HttpServer.create(new InetSocketAddress("localhost", 8001), 0);
@@ -20,7 +20,7 @@ public class MyHttpServerStarter {
             httpServer.start();
             logger.info("Server started on port: 8001");
         } catch (IOException e) {
-            throw new CannotCreateServerException("Cannot create server. Make sure your internet connection and server values are good and try again");
+            logger.info("Cannot create server. Make sure your internet connection and server values are good and try again.");
         }
     }
 }
