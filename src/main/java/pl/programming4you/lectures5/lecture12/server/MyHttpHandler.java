@@ -29,7 +29,7 @@ public class MyHttpHandler implements HttpHandler {
             } else if ("POST".equals(httpExchange.getRequestMethod())) {
                 returnedMovie = handlePostRequest(httpExchange);
             } else {
-                errorMessage = "HTTP method not allowed";
+                errorMessage = "This HTTP method is not allowed.";
             }
 
         } catch (CannotProcessJsonException | MovieNotFoundException e) {
