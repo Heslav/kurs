@@ -1,6 +1,6 @@
 # Programming course "Programming4you"
 
-Starting with the basics of java, with each subsequent task I had the pleasure of delving deeper into more complex concepts. Some tasks were descriptive, without coding, that's why their numbering is incosistent. 
+Starting with the basics of java, with each subsequent task I had the pleasure of delving deeper into more complex concepts. Some tasks were descriptive or done in Python, that's why their numbering is incosistent. 
 Every task was reviewed by my mentor, this taught me working with code-review which I think is great thing that prepared me well for real working scenarios.
 
 ## Task 3
@@ -113,10 +113,9 @@ Create an interface Lottery with methods List<Player> getWinners() and void play
 Players play by calling the play method, and when all players have played, the winners are selected by calling getWinners(). Compare strings using the equals method.
 
 Create three implementations of the Lottery interface:
-
-    "Fair" lottery, where each player has a 1/number_of_players chance of winning (can be more than 1). Use the Random class for drawing.
-    "Charity" lottery, where everyone wins.
-    "Casino," where no one wins.
+-"Fair" lottery, where each player has a 1/number_of_players chance of winning (can be more than 1). Use the Random class for drawing.
+-"Charity" lottery, where everyone wins.
+-"Casino," where no one wins.
 
 In the main class, print the names of the winners or "Sorry, there were no winners this time!" if there are none.
 
