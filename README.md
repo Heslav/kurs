@@ -1,7 +1,7 @@
 # Programming course "Programming4you"
 
 Starting with the basics of java, with each subsequent task I had the pleasure of delving deeper into more complex concepts. Some tasks were descriptive or done in Python, that's why their numbering is incosistent. 
-Every task was reviewed by my mentor, this taught me working with code-review which I think is great thing that prepared me well for real working scenarios.
+Each task was reviewed by my mentor, this taught me working with code-review and git which I think is great thing that prepared me well for real working scenarios.
 
 ## Task 3
 
